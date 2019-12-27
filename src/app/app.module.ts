@@ -4,8 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LookupStateService } from './lookup-state-service.service';
-import { CommonService } from './common-service.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonService } from './common.service';
+import { ProjectTypeService } from './project-type.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     LookupStateService,
+    ProjectTypeService,
     CommonService,
   ],
   bootstrap: [AppComponent]

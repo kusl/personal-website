@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { CommonService } from './common-service.service';
 import { ListApiModel } from './list-api-model';
 import { of } from 'rxjs';
 import { map, catchError } from "rxjs/operators";
 import { ProjectType } from './project-type.model';
+import { CommonService } from './common.service';
 const BASE_URL = "";
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectTypeServiceService {
+export class ProjectTypeService {
 
   constructor(private api: CommonService) { }
   getList() {
