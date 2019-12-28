@@ -1,1 +1,18 @@
 <p>item works!</p>
+
+<form [formGroup]="projectForm">
+    <div formGroupName="projectSubForm">
+        <label>
+            ID: 
+            <input type="text" formControlName="id">
+        </label>
+        <label>
+            Project Type: 
+            <input type="text" formControlName="projectType">
+        </label>
+        <label>
+            State:
+            <input type="text" formControlName="state">
+        </label>
+    </div>
+</form>

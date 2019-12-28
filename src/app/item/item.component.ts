@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { LookupState } from '../lookup-state.model';
 import { Subproject } from '../subproject.model';
 import { ProjectType } from '../project-type.model';
@@ -10,19 +10,32 @@ import { HTTP_STATUS_CODE } from '../http-status-code.enum';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.sass']
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent implements OnInit, AfterContentChecked {
   id: number;
   title = 'Personal Website';
   lookupStates: Array<LookupState>;
   subprojects: Array<Subproject>;
   lookupProjectTypes: Array<ProjectType>;
   project: Project;
+  projectForm = this.formBuilder.group({
+    projectSubForm: this.formBuilder.group({
+      id: [''],
+      projectType: [''],
+      state: ['']
+    }),
+    subprojectSubForm: this.formBuilder.group({
+      id: [''],
+      name: [''],
+      description: ['']
+    })
+  });
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
     this.getId();
@@ -36,7 +49,8 @@ export class ItemComponent implements OnInit {
     private projectTypeService: ProjectTypeService,
     private subprojectService: SubprojectService,
     private projectService: ProjectService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private formBuilder: FormBuilder) {
   }
   getId() {
     this.activatedRoute.params.subscribe(params => {
@@ -96,10 +110,23 @@ export class ItemComponent implements OnInit {
           this.project = new Project();
         }
         this.project = response.data[0];
+        this.projectForm.patchValue(
+          {
+            projectSubForm:
+            {
+              id: this.project.id,
+              projectType: this.lookupProjectTypes[this.project.projectType].name,
+              state: this.lookupStates[this.project.state].name
+            }
+          }
+        );
         console.log({ project: this.project });
       } else {
         console.error({ project: response });
       }
     })
+  }
+  ngAfterContentChecked() {
+    console.log({ state: this.lookupStates[this.project.state].name });
   }
 }
