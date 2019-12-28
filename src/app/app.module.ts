@@ -7,10 +7,14 @@ import { LookupStateService } from './lookup-state-service.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { ProjectTypeService } from './project-type.service';
+import { ItemComponent } from './item/item.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ItemComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
