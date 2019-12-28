@@ -1,12 +1,22 @@
-[
-  {
-    "id": 1,
-    "code": "CO",
-    "name": "Colorado"
-  },
-  {
-    "id": 2,
-    "code": "CA",
-    "name": "California"
-  }
-]
+{
+  "data": [
+    {
+      "data": [
+        {
+          "id": 1,
+          "code": "CO",
+          "name": "Colorado"
+        }
+      ]
+    },
+    {
+      "data": [
+        {
+          "id": 2,
+          "code": "CA",
+          "name": "California"
+        }
+      ]
+    }
+  ]
+}

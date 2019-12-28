@@ -53,9 +53,9 @@ export class ItemComponent implements OnInit {
         response.data.forEach(x => {
           this.lookupStates.push(x.data);
         });
-        console.log({ types: this.lookupProjectTypes });
+        console.log({ states: this.lookupStates });
       } else {
-        console.error(response);
+        console.error({ response: response });
       }
     });
   }
@@ -70,7 +70,7 @@ export class ItemComponent implements OnInit {
         });
         console.log({ projectTypes: this.lookupProjectTypes });
       } else {
-        console.error(response);
+        console.error({ projectTypes: response });
       }
     });
   }
@@ -83,8 +83,9 @@ export class ItemComponent implements OnInit {
         response.data.forEach(x => {
           this.subprojects.push(x.data);
         });
+        console.log({ subprojects: this.subprojects });
       } else {
-        console.error({ subprojects: this.subprojects });
+        console.error({ subprojects: response });
       }
     });
   }
@@ -94,9 +95,10 @@ export class ItemComponent implements OnInit {
         if (!this.project) {
           this.project = new Project();
         }
-        this.project = response.data as Project;
+        this.project = response.data[0];
+        console.log({ project: this.project });
       } else {
-        console.error({ project: this.project });
+        console.error({ project: response });
       }
     })
   }
