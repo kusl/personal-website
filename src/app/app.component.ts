@@ -5,6 +5,8 @@ import { HTTP_STATUS_CODE } from './http-status-code.enum';
 import { ProjectType } from './project-type.model';
 import { ProjectTypeService } from './project-type.service';
 import { LookupState } from './lookup-state.model';
+import { Subproject } from './subproject.model';
+import { SubprojectService } from './subproject.service';
 
 @Component({
   selector: 'app-root',
@@ -14,17 +16,20 @@ import { LookupState } from './lookup-state.model';
 export class AppComponent {
   title = 'Personal Website';
   lookupStates: Array<LookupState>;
+  subprojects: Array<Subproject>;
   lookupProjectTypes: Array<ProjectType>;
   public constructor(private titleService: Title,
     private lookupStateService: LookupStateService,
-    private projectTypeService: ProjectTypeService) {
+    private projectTypeService: ProjectTypeService,
+    private subprojectService: SubprojectService) {
     this.titleService.setTitle(this.title);
     this.getLookupStates();
     this.getLookupProjectTypes();
+    this.getSubprojects();
   }
   getLookupStates() {
     this.projectTypeService.getList().subscribe(response => {
-      if (response.status === HTTP_STATUS_CODE.OK && response.data != null) {
+      if (response.status === HTTP_STATUS_CODE.OK && response.data) {
         if (!this.lookupProjectTypes) {
           this.lookupProjectTypes = new Array<ProjectType>();
         }
@@ -38,18 +43,32 @@ export class AppComponent {
     });
   }
   getLookupProjectTypes() {
-    this.lookupStateService.getList().subscribe(response => {
-      if (response.status === HTTP_STATUS_CODE.OK && response.data != null) {
-        if (!this.lookupStates) {
-          this.lookupStates = new Array<LookupState>();
+    this.subprojectService.getList().subscribe(response => {
+      if (response.status === HTTP_STATUS_CODE.OK && response.data) {
+        if (!this.subprojects) {
+          this.subprojects = new Array<Subproject>();
         }
         response.data.forEach(x => {
-          this.lookupStates.push(x.data);
+          this.subprojects.push(x.data);
         });
-        console.log({ states: this.lookupStates });
+        console.log({ subprojects: this.subprojects });
       } else {
         console.log(response);
       }
     });
+  }
+  getSubprojects() {
+    this.subprojectService.getList().subscribe(response => {
+      if (response.status === HTTP_STATUS_CODE.OK && response.data) {
+        if (!this.subprojects) {
+          this.subprojects = new Array<Subproject>();
+        }
+        response.data.forEach(x => {
+          this.subprojects.push(x.data);
+        });
+      } else {
+        console.log(response);
+      }
+    })
   }
 }
