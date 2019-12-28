@@ -71,6 +71,6 @@ export class ItemComponent implements OnInit {
       } else {
         console.log(response);
       }
-    })
+    });
   }
 }
