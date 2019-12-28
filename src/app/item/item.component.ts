@@ -7,6 +7,9 @@ import { LookupStateService } from '../lookup-state-service.service';
 import { ProjectTypeService } from '../project-type.service';
 import { SubprojectService } from '../subproject.service';
 import { HTTP_STATUS_CODE } from '../http-status-code.enum';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ProjectService } from '../project.service';
+import { Project } from '../project.model';
 
 @Component({
   selector: 'app-item',
@@ -14,20 +17,32 @@ import { HTTP_STATUS_CODE } from '../http-status-code.enum';
   styleUrls: ['./item.component.sass']
 })
 export class ItemComponent implements OnInit {
-  ngOnInit(): void {
-    this.titleService.setTitle(this.title);
-    this.getLookupStates();
-    this.getLookupProjectTypes();
-    this.getSubprojects();
-  }
+  id: number;
   title = 'Personal Website';
   lookupStates: Array<LookupState>;
   subprojects: Array<Subproject>;
   lookupProjectTypes: Array<ProjectType>;
+  project: Project;
+  ngOnInit(): void {
+    this.titleService.setTitle(this.title);
+    this.getId();
+    this.getLookupStates();
+    this.getLookupProjectTypes();
+    this.getSubprojects();
+    this.getProject();
+  }
   public constructor(private titleService: Title,
     private lookupStateService: LookupStateService,
     private projectTypeService: ProjectTypeService,
-    private subprojectService: SubprojectService) {
+    private subprojectService: SubprojectService,
+    private projectService: ProjectService,
+    private activatedRoute: ActivatedRoute) {
+  }
+  getId() {
+    this.activatedRoute.params.subscribe(params => {
+      this.id = +params['id'];
+      this.titleService.setTitle(`Personal Website - Item ${this.id}`);
+    });
   }
   getLookupStates() {
     this.lookupStateService.getList().subscribe(response => {
@@ -40,7 +55,7 @@ export class ItemComponent implements OnInit {
         });
         console.log({ types: this.lookupProjectTypes });
       } else {
-        console.log(response);
+        console.error(response);
       }
     });
   }
@@ -55,7 +70,7 @@ export class ItemComponent implements OnInit {
         });
         console.log({ projectTypes: this.lookupProjectTypes });
       } else {
-        console.log(response);
+        console.error(response);
       }
     });
   }
@@ -69,8 +84,20 @@ export class ItemComponent implements OnInit {
           this.subprojects.push(x.data);
         });
       } else {
-        console.log(response);
+        console.error({ subprojects: this.subprojects });
       }
     });
+  }
+  getProject() {
+    this.projectService.get(this.id).subscribe(response => {
+      if (response.status === HTTP_STATUS_CODE.OK && response.data) {
+        if (!this.project) {
+          this.project = new Project();
+        }
+        this.project = response.data as Project;
+      } else {
+        console.error({ project: this.project });
+      }
+    })
   }
 }
