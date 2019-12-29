@@ -17,7 +17,7 @@ import { FormBuilder } from '@angular/forms';
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.sass']
 })
-export class ItemComponent implements OnInit, AfterContentChecked {
+export class ItemComponent implements OnInit {
   id: number;
   title = 'Personal Website';
   lookupStates: Array<LookupState>;
@@ -43,6 +43,7 @@ export class ItemComponent implements OnInit, AfterContentChecked {
     this.getLookupProjectTypes();
     this.getSubprojects();
     this.getProject();
+    this.populateForm();
   }
   public constructor(private titleService: Title,
     private lookupStateService: LookupStateService,
@@ -110,23 +111,25 @@ export class ItemComponent implements OnInit, AfterContentChecked {
           this.project = new Project();
         }
         this.project = response.data[0];
-        this.projectForm.patchValue(
-          {
-            projectSubForm:
-            {
-              id: this.project.id,
-              projectType: this.lookupProjectTypes[this.project.projectType].name,
-              state: this.lookupStates[this.project.state].name
-            }
-          }
-        );
         console.log({ project: this.project });
       } else {
         console.error({ project: response });
       }
-    })
+    });
   }
-  ngAfterContentChecked() {
-    console.log({ state: this.lookupStates[this.project.state].name });
+  populateForm() {
+    console.log({ projectType: this.project.projectType - 1 });
+    console.log({ state: this.project.state - 1 });
+    console.log({ projectTypes: this.lookupProjectTypes[this.project.projectType - 1][0] });
+    this.projectForm.patchValue(
+      {
+        projectSubForm:
+        {
+          id: this.project.id,
+          projectType: this.lookupProjectTypes[this.project.projectType - 1][0].name,
+          state: this.lookupStates[this.project.state - 1][0].name
+        }
+      }
+    );
   }
 }
