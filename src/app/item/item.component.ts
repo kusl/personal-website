@@ -28,7 +28,8 @@ export class ItemComponent implements OnInit {
     projectSubForm: this.formBuilder.group({
       id: [''],
       projectType: [''],
-      state: ['']
+      state: [''],
+      name: ['']
     }),
     subprojectSubForm: this.formBuilder.group({
       id: [''],
@@ -112,8 +113,10 @@ export class ItemComponent implements OnInit {
         this.project = response.data[0];
         this.getSubprojects();
         console.log({ project: this.project });
+        this.titleService.setTitle(`Personal Website - Item ${this.project.name}`);
       } else {
         console.error({ project: response });
+        alert(`We don't have any record by id of ${this.project.id}. Try 1 - 5.`);
       }
     });
   }
@@ -127,7 +130,8 @@ export class ItemComponent implements OnInit {
         {
           id: this.project.id,
           projectType: this.lookupProjectTypes[this.project.projectType - 1][0].name,
-          state: this.lookupStates[this.project.state - 1][0].name
+          state: this.lookupStates[this.project.state - 1][0].name,
+          name: this.project.name
         }
       }
     );

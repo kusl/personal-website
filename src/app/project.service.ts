@@ -14,7 +14,7 @@ export class ProjectService {
   constructor(private api: CommonService) { }
 
   get(id: number) {
-    return this.api.get(BASE_URL + "assets/one.json")
+    return this.api.get(BASE_URL + `assets/${id}.json`)
     .pipe(
       map(value => value),
       catchError(response => {
