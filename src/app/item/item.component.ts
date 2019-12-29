@@ -29,11 +29,11 @@ export class ItemComponent implements OnInit {
       id: [''],
       projectType: [''],
       state: [''],
-      name: ['']
+      projectName: ['']
     }),
     subprojectSubForm: this.formBuilder.group({
       id: [''],
-      name: [''],
+      subProjectName: [''],
       description: ['']
     })
   });
