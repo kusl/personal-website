@@ -39,11 +39,6 @@ export class ItemComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
     this.getId();
-    this.getLookupStates();
-    this.getLookupProjectTypes();
-    this.getSubprojects();
-    this.getProject();
-    this.populateForm();
   }
   public constructor(private titleService: Title,
     private lookupStateService: LookupStateService,
@@ -57,6 +52,7 @@ export class ItemComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.id = +params['id'];
       this.titleService.setTitle(`Personal Website - Item ${this.id}`);
+      this.getLookupStates();
     });
   }
   getLookupStates() {
@@ -69,6 +65,7 @@ export class ItemComponent implements OnInit {
           this.lookupStates.push(x.data);
         });
         console.log({ states: this.lookupStates });
+        this.getLookupProjectTypes();
       } else {
         console.error({ response: response });
       }
@@ -84,6 +81,7 @@ export class ItemComponent implements OnInit {
           this.lookupProjectTypes.push(x.data);
         });
         console.log({ projectTypes: this.lookupProjectTypes });
+        this.getProject();
       } else {
         console.error({ projectTypes: response });
       }
@@ -99,6 +97,7 @@ export class ItemComponent implements OnInit {
           this.subprojects.push(x.data);
         });
         console.log({ subprojects: this.subprojects });
+        this.populateForm();
       } else {
         console.error({ subprojects: response });
       }
@@ -111,6 +110,7 @@ export class ItemComponent implements OnInit {
           this.project = new Project();
         }
         this.project = response.data[0];
+        this.getSubprojects();
         console.log({ project: this.project });
       } else {
         console.error({ project: response });
